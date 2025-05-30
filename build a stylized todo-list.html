@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stylized To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .task-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .task-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .task-input button {
+            background-color: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .task-input button:hover {
+            background-color: #2563eb;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9fafb;
+            padding: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .task-item.completed {
+            background-color: #d1fae5;
+            text-decoration: line-through;
+            color: #047857;
+        }
+
+        .task-item span {
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .task-item button {
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .task-item button:hover {
+            color: #dc2626;
+        }
+
+        .no-tasks {
+            text-align: center;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Stylized To-Do List</h1>
+
+        <div class="task-input">
+            <input type="text" id="newTask" placeholder="Add a new task...">
+            <button onclick="addTask()">Add</button>
+        </div>
+
+        <ul class="task-list" id="taskList">
+            <!-- Tasks will be added here -->
+        </ul>
+
+        <p class="no-tasks" id="noTasksMessage">No tasks yet. Add one above!</p>
+    </div>
+
+    <script>
+        const taskList = document.getElementById('taskList');
+        const noTasksMessage = document.getElementById('noTasksMessage');
+
+        function addTask() {
+            const newTaskInput = document.getElementById('newTask');
+            const taskText = newTaskInput.value.trim();
+
+            if (taskText === '') return;
+
+            const taskItem = document.createElement('li');
+            taskItem.className = 'task-item';
+
+            const taskSpan = document.createElement('span');
+            taskSpan.textContent = taskText;
+            taskSpan.onclick = () => {
+                taskItem.classList.toggle('completed');
+            };
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = '\u2715';
+            deleteButton.onclick = () => {
+                taskList.removeChild(taskItem);
+                toggleNoTasksMessage();
+            };
+
+            taskItem.appendChild(taskSpan);
+            taskItem.appendChild(deleteButton);
+            taskList.appendChild(taskItem);
+
+            newTaskInput.value = '';
+            toggleNoTasksMessage();
+        }
+
+        function toggleNoTasksMessage() {
+            noTasksMessage.style.display = taskList.children.length === 0 ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
